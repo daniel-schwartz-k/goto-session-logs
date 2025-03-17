@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EP Sessions</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+        form {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input {
+            padding: 10px;
+            width: calc(100% - 20px);
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        select, button {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+    <script>
+        function validateAndSubmit() {
+            const sessionIdInput = document.getElementById('sessionId');
+            const envSelect = document.getElementById('envSelect');
+            const sessionId = sessionIdInput.value.trim();
+            const env = envSelect.value;
+
+            if (sessionId) {
+                goto(sessionId, env);
+            } else {
+                alert('Please enter a Session Id.');
+            }
+        }
+
+        const nvq = "https://cd968e74-5935-4547-9535-058406f035c5.us-2.checkpoint.security/_dashboards/app/data-explorer/discover/#/view/52556c30-338d-11ef-9357-9767618271b6?_q=(filters:!(),query:(language:kuery,query:'sessionId:%22<SESSION>%22%20AND%20@timestamp%20%3C%20%22<TO>%22%20AND%20@timestamp%20%3E%20%22<FROM>%22'))&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now%2Fd,to:now%2Fd))&_a=(discover:(columns:!(message,service,action,uid,partnerId,level,kubernetes.container_name),isDirty:!f,savedSearch:'52556c30-338d-11ef-9357-9767618271b6',sort:!()),metadata:(indexPattern:'92e52160-295a-11ef-a68b-4b7d1cf878f3',view:discover))";
+        const nvp = "https://06c9127f-3d6f-46c9-91c4-5c5cfa03f710.us-4.checkpoint.security/_dashboards/app/data-explorer/discover/#/view/25e1ae50-3849-11ef-9062-61c9dadcbbe4?_q=(filters:!(),query:(language:kuery,query:'sessionId:%22<SESSION>%22%20AND%20@timestamp%20%3C%20%22<TO>%22%20AND%20@timestamp%20%3E%20%22<FROM>%22'))&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(discover:(columns:!(message,service,action,uid,partnerId,level,statusCode,sessionId),isDirty:!f,savedSearch:'25e1ae50-3849-11ef-9062-61c9dadcbbe4',sort:!()),metadata:(indexPattern:d25bf030-3175-11ef-85c8-cd7932a3cebc,view:discover))"
+        
+        function goto(sessionId, env) {
+            const from = new Date();
+            from.setDate(from.getDate() - 1)
+            const urlTemplate = env === 'nvq' ? nvq : nvp
+            const url = urlTemplate.replaceAll('<SESSION>', sessionId)
+                .replaceAll('<FROM>', from.toISOString())
+                .replaceAll('<TO>', new Date().toISOString());
+            console.log('GOING TO', url);
+            window.open(url, '_blank');
+        }
+    </script>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='50' fill='%23007BFF'/><text x='50%' y='50%' dominant-baseline='middle' text-anchor='middle' font-size='50' fill='white'>E</text></svg>">
+</head>
+<body>
+    <form onsubmit="event.preventDefault(); validateAndSubmit();">
+        <label for="sessionId">Session Id:</label>
+        <input type="text" id="sessionId" name="sessionId" required>
+        <label for="envSelect">Environment:</label>
+        <select id="envSelect" name="envSelect">
+            <option value="nvq">NVQ</option>
+            <option value="nvp">NVP</option>
+        </select>
+        <button type="submit">Go</button>
+    </form>
+</body>
+</html>
