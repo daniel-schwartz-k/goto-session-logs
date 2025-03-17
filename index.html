@@ -64,16 +64,16 @@
             }
         }
 
-        const nvq = "https://cd968e74-5935-4547-9535-058406f035c5.us-2.checkpoint.security/_dashboards/app/data-explorer/discover/#/view/52556c30-338d-11ef-9357-9767618271b6?_q=(filters:!(),query:(language:kuery,query:'sessionId:%22<SESSION>%22%20AND%20@timestamp%20%3C%20%22<TO>%22%20AND%20@timestamp%20%3E%20%22<FROM>%22'))&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now%2Fd,to:now%2Fd))&_a=(discover:(columns:!(message,service,action,uid,partnerId,level,kubernetes.container_name),isDirty:!f,savedSearch:'52556c30-338d-11ef-9357-9767618271b6',sort:!()),metadata:(indexPattern:'92e52160-295a-11ef-a68b-4b7d1cf878f3',view:discover))";
-        const nvp = "https://06c9127f-3d6f-46c9-91c4-5c5cfa03f710.us-4.checkpoint.security/_dashboards/app/data-explorer/discover/#/view/25e1ae50-3849-11ef-9062-61c9dadcbbe4?_q=(filters:!(),query:(language:kuery,query:'sessionId:%22<SESSION>%22%20AND%20@timestamp%20%3C%20%22<TO>%22%20AND%20@timestamp%20%3E%20%22<FROM>%22'))&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-15m,to:now))&_a=(discover:(columns:!(message,service,action,uid,partnerId,level,statusCode,sessionId),isDirty:!f,savedSearch:'25e1ae50-3849-11ef-9062-61c9dadcbbe4',sort:!()),metadata:(indexPattern:d25bf030-3175-11ef-85c8-cd7932a3cebc,view:discover))"
+
+            
+        const nvq = `https://cd968e74-5935-4547-9535-058406f035c5.us-2.checkpoint.security/_dashboards/app/data-explorer/discover/#/view/52556c30-338d-11ef-9357-9767618271b6?_q=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:'92e52160-295a-11ef-a68b-4b7d1cf878f3',key:sessionId,negate:!f,params:(query:<SESSION>),type:phrase),query:(match_phrase:(sessionId:<SESSION>)))),query:(language:kuery,query:''))&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now%2Fd,to:now%2Fd))&_a=(discover:(columns:!(message,service,action,uid,partnerId,level,kubernetes.container_name),isDirty:!f,savedSearch:'52556c30-338d-11ef-9357-9767618271b6',sort:!()),metadata:(indexPattern:'92e52160-295a-11ef-a68b-4b7d1cf878f3',view:discover))`;
+        const nvp = `https://06c9127f-3d6f-46c9-91c4-5c5cfa03f710.us-4.checkpoint.security/_dashboards/app/data-explorer/discover/#/view/25e1ae50-3849-11ef-9062-61c9dadcbbe4?_q=(filters:!(('$state':(store:appState),meta:(alias:!n,disabled:!f,index:d25bf030-3175-11ef-85c8-cd7932a3cebc,key:sessionId,negate:!f,params:(query:<SESSION>),type:phrase),query:(match_phrase:(sessionId:<SESSION>)))),query:(language:kuery,query:''))&_g=(filters:!(),refreshInterval:(pause:!t,value:0),time:(from:now-24h,to:now))&_a=(discover:(columns:!(message,service,action,uid,partnerId,level,statusCode,sessionId),isDirty:!f,savedSearch:'25e1ae50-3849-11ef-9062-61c9dadcbbe4',sort:!()),metadata:(indexPattern:d25bf030-3175-11ef-85c8-cd7932a3cebc,view:discover))`;
         
         function goto(sessionId) {
             const from = new Date();
             from.setDate(from.getDate() - 1)
             const urlTemplate = sessionId.includes('nvq') ? nvq : nvp
             const url = urlTemplate.replaceAll('<SESSION>', sessionId)
-                .replaceAll('<FROM>', from.toISOString())
-                .replaceAll('<TO>', new Date().toISOString());
             console.log('GOING TO', url);
             window.open(url, '_blank');
         }
