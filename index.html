@@ -14,6 +14,7 @@
             height: 100vh;
             margin: 0;
             background-color: #f4f4f4;
+            flex-direction: column;
         }
         form {
             background: #fff;
@@ -22,6 +23,7 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 400px;
             width: 100%;
+            margin: auto;
         }
         label {
             display: block;
@@ -51,8 +53,19 @@
         button:hover {
             background-color: #0056b3;
         }
+        #bottom {
+            margin-top: auto;
+            padding: 10px;
+            text-align: center;
+            width: 100%;
+            background-color: #f4f4f4;
+        }
     </style>
     <script>
+        window.onload = function() {
+            document.getElementById('sessionId').focus();
+        };
+
         function validateAndSubmit() {
             const sessionIdInput = document.getElementById('sessionId');
             const sessionId = sessionIdInput.value.trim();
@@ -86,5 +99,8 @@
         <input type="text" id="sessionId" name="sessionId" required>
         <button type="submit">Go</button>
     </form>
+    <div id="bottom">
+        <span>Daniel Schwartz Inc 🚀 Copyright © 2023, All Rights Are All Right!</span>
+    </div>
 </body>
 </html>
