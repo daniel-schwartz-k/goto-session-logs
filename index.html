@@ -87,6 +87,12 @@
             const urlTemplate = sessionId.includes('nvq') ? nvq : nvp
             const url = urlTemplate.replaceAll('<SESSION_ID>', sessionId)
             console.log('GOING TO', url);
+            // copy url to the user clipboard
+            navigator.clipboard.writeText(url).then(() => {
+                console.log('URL copied to clipboard');
+            }, (err) => {
+                console.error('Could not copy URL: ', err);
+            });
             window.open(url, '_blank');
             document.getElementById('sessionId').focus();
         }
