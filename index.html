@@ -41,12 +41,27 @@
         }
         input {
             padding: 10px;
-            width: calc(100% - 20px);
+            width: 100%;
             margin-bottom: 10px;
             border: 1px solid #555;
             border-radius: 4px;
             background-color: #444;
             color: #fff;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 0 rgba(255, 140, 0, 0);
+        }
+        
+        input:focus {
+            border-color: #ff8c00;
+            box-shadow: 0 0 10px 2px rgba(255, 140, 0, 0.3);
+            transform: scale(1.02);
+            outline: none;
+        }
+        
+        .input-active {
+            border-color: #ff8c00 !important;
+            box-shadow: 0 0 15px 3px rgba(255, 140, 0, 0.4) !important;
+            transform: scale(1.03) !important;
         }
         button {
             padding: 10px;
@@ -70,10 +85,67 @@
             background-color: #2c2c2c;
             color: #ff8c00;
         }
+        
+        /* Ripple effect for paste action */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 140, 0, 0.4);
+            transform: scale(0);
+            animation: ripple 0.8s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+        
+        form {
+            position: relative;
+            overflow: hidden;
+        }
     </style>
     <script>
         window.onload = function() {
-            document.getElementById('sessionId').focus();
+            const sessionInput = document.getElementById('sessionId');
+            sessionInput.focus();
+            
+            // Add pulse effect on input events
+            sessionInput.addEventListener('input', function(e) {
+                // Add active class for the effect
+                this.classList.add('input-active');
+                
+                // Remove the class after a short delay
+                setTimeout(() => {
+                    this.classList.remove('input-active');
+                }, 500);
+            });
+            
+            // Create a more dramatic effect for paste events
+            sessionInput.addEventListener('paste', function(e) {
+                // Animated effect for paste
+                this.classList.add('input-active');
+                
+                // Ripple effect (create and append a ripple element)
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.parentNode.appendChild(ripple);
+                
+                // Position the ripple
+                const rect = this.getBoundingClientRect();
+                ripple.style.width = ripple.style.height = `${Math.max(rect.width, rect.height) * 2}px`;
+                ripple.style.left = `${e.clientX - rect.left - ripple.offsetWidth/2}px`;
+                ripple.style.top = `${e.clientY - rect.top - ripple.offsetHeight/2}px`;
+                
+                // Remove ripple and active class after animation
+                setTimeout(() => {
+                    this.classList.remove('input-active');
+                    ripple.remove();
+                }, 800);
+            });
         };
 
         function validateAndSubmit() {
