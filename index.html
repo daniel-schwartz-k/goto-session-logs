@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EP Sessions</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             display: flex;
@@ -12,7 +21,6 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            margin: 0;
             background-color: #2c2c2c;
             color: #fff;
         }
@@ -88,12 +96,6 @@
             const urlTemplate = sessionId.includes('nvq') ? nvq : nvp
             const url = urlTemplate.replaceAll('<SESSION_ID>', sessionId)
             console.log('GOING TO', url);
-            // // copy url to the user clipboard
-            // navigator.clipboard.writeText(url).then(() => {
-            //     console.log('URL copied to clipboard');
-            // }, (err) => {
-            //     console.error('Could not copy URL: ', err);
-            // });
             window.open(url, '_blank');
             document.getElementById('sessionId').focus();
         }
